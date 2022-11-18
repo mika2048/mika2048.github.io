@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>【遍历】【二分查找】【多指针】匹配子序列的单词数 | Scaramouche</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://scaramouche.me/favicon.ico?v=1668787649074">
+<link rel="stylesheet" href="https://scaramouche.me/styles/main.css">
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+    <meta name="description" content="
+写在前面：
+我相信很多初学者根本看不懂一些题解,其中有太多单个字符变量,每条代码也没有注释,也像囫囵吞枣一般直接将答案摆在开头,没有思考过程.
+看这种题解对能力提升几乎为0:既没有思路,也写不出代码
+看完我的题解如果你还不懂,请在评论区留..." />
+    <meta name="keywords" content="Leetcode Problems,遍历,二分查找,多指针" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://scaramouche.me">
+        <img src="https://scaramouche.me/images/avatar.png?v=1668787649074" class="site-logo">
+        <h1 class="site-title">Scaramouche</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="https://scaramouche.me" class="site-nav">
+            Home
+          </a>
+        
+      
+        
+          <a href="https://scaramouche.me/documents" class="site-nav">
+            Documents
+          </a>
+        
+      
+        
+          <a href="https://scaramouche.me/tags" class="site-nav">
+            Tags
+          </a>
+        
+      
+        
+          <a href="https://oi-wiki.org/" class="site-nav" target="_blank">
+            [OI Wiki]
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      <div align=center>Algorithms Solutions and Guide-Books</div>
+    </div>
+    <div class="site-footer">
+       | <a class="rss" href="https://scaramouche.me/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">【遍历】【二分查找】【多指针】匹配子序列的单词数</h2>
+            <div class="post-date">11月17日 Thursday</div>
+            
+            <div class="post-content" v-pre>
+              <hr>
+<p><em>写在前面：</em><br>
+<em>我相信很多初学者根本看不懂一些题解,其中有太多单个字符变量,每条代码也没有注释,也像囫囵吞枣一般直接将答案摆在开头,没有思考过程.</em><br>
+<em>看这种题解对能力提升几乎为0:既没有思路,也写不出代码</em><br>
+<em>看完我的题解如果你还不懂,请在评论区留下你的看法,我会一一回复到你懂为止</em></p>
+<hr>
+<h2 id="解题思路">解题思路</h2>
+<p>对于这道题,通俗来讲就是求出字符串数组 <code>words</code>中是字符串 <code>s</code>的子序列的个数.</p>
+<p>判断一个字符串是另一个字符串的子序列的一个基本方法就是<strong>双指针</strong>,代码如下:</p>
+<p><strong>子序列判断</strong><br>
+<em>以下代码表示判断 <code>word</code>是否是 <code>s</code>的子序列</em></p>
+<pre><code class="language-py">    i=0     # index of char in s
+    j=0     # index of char in word
+
+    while i&lt;len(s) and j&lt;len(word):
+        if s[i]==word[j]:
+            i+=1;j+=1       # 匹配成功,两个指针后移
+        else:
+            i+=1        # 匹配失败,字符串s指针后移
+        if j==len(word):        # 匹配了一整个word
+            # do something 匹配成功了
+</code></pre>
+<h3 id="解法一-遍历">解法一: 遍历</h3>
+<p>根据<strong>子序列判断</strong>,我们可以通过遍历 <code>words</code>中的每个字符串,判断是否是 <code>s</code>的子序列,如果是,则计数器加一.</p>
+<pre><code class="language-py">class Solution:
+    def numMatchingSubseq(self, s: str, words: List[str]) -&gt; int:
+        # 解法一: 遍历
+        ans=0
+        for word in words:
+            i=0 # index of char in s
+            j=0 # index of char in word
+
+            while i&lt;len(s) and j&lt;len(word):
+                if s[i]==word[j]:
+                    i+=1;j+=1 # 匹配成功,两个指针后移
+                else:
+                    i+=1 # 匹配失败,字符串s指针后移
+            if j==len(word):# 匹配了一整个word
+                ans+=1
+        return ans
+</code></pre>
+<h3 id="解法二-二分查找">解法二: 二分查找</h3>
+<p>在解法一中,我们观察到主要循环体内部:</p>
+<pre><code class="language-py">            while i&lt;len(s) and j&lt;len(word):
+                if s[i]==word[j]:
+                    i+=1;j+=1 # 匹配成功,两个指针后移
+                else:
+                    i+=1 # 匹配失败,字符串s指针后移
+</code></pre>
+<p>语句 <code>if s[i]==word[j]</code>多次判断失败后,<code>i</code>指针会不断后移,直到 <code>i</code>指针指向 <code>s</code>中的某个字符与 <code>word[j]</code>相等,然后 <code>i</code>和 <code>j</code>指针都后移.</p>
+<p>因此我们可以预先处理 <code>s</code>,将 <code>s</code>中的每个字符的位置存储起来,这样我们就可以通过二分查找的方法,快速找到 <code>s</code>中与 <code>word[j]</code>相等的字符.</p>
+<p><strong>预处理</strong><br>
+<em>以下代码表示预处理字符串s,将s中的每个字符的位置存储起来</em><br>
+<em>例如: <code>s=&quot;aabca&quot;</code> 预处理后的结果为:</em><br>
+<em><code>cnt={'a':[0,1,4],'b':[2],'c':[3]}</code></em></p>
+<pre><code class="language-py">        cnt=defaultdict(list)
+        for idx,ch in enumerate(s):
+            cnt[ch].append(idx)
+</code></pre>
+<p>同时,因为预处理后的表示每个字符位置的数组是单调递增的,我们修改字符匹配的方法为二分查找法:</p>
+<pre><code class="language-py">                if word[j] not in cnt:
+                    break  # 匹配失败,word[j]字符在s中不存在
+                next_i = bisect_left(cnt[word[j]], i)
+                if next_i == len(cnt[word[j]]):
+                    break  # 匹配失败,word[j]字符在未匹配的s中不存在
+                i = cnt[word[j]][next_i]+1  # 匹配成功,更新i
+</code></pre>
+<p><strong>完整代码</strong></p>
+<pre><code class="language-py">class Solution:
+    def numMatchingSubseq(self, s: str, words: List[str]) -&gt; int:
+        # 解法二: 二分查找
+        ans = 0
+        cnt = defaultdict(list)
+        for idx, ch in enumerate(s):
+            cnt[ch].append(idx)
+        for word in words:
+            i = 0  # index of char in s
+            j = 0  # index of char in word
+
+            while i &lt; len(s) and j &lt; len(word):
+                if word[j] not in cnt:
+                    break  # 匹配失败,word[j]字符在s中不存在
+                next_i = bisect_left(cnt[word[j]], i)
+                if next_i == len(cnt[word[j]]):
+                    break  # 匹配失败,word[j]字符在未匹配的s中不存在
+                i = cnt[word[j]][next_i]+1  # 匹配成功,更新i
+                j += 1
+            if j == len(word):  # 匹配了一整个word
+                ans += 1
+        return ans
+</code></pre>
+<h3 id="解法三-多指针">解法三: 多指针</h3>
+<p>在解法二中,没有考虑到 <code>words</code>中的字符串可能存在前缀重复的情况,例如:<br>
+<code>s=&quot;abcde&quot;</code>,<code>words=[&quot;a&quot;,&quot;ab&quot;,&quot;abc&quot;,&quot;abcd&quot;,&quot;abcde&quot;]</code>.在这种情况下,尽管采用了二分查找,在判断 <code>words</code>中的每个字符串是否为 <code>s</code>的子序列时,多次匹配了相同的前缀.</p>
+<p>我们可以把words按照首字母分类,例如:</p>
+<pre><code class="language-py">words=[&quot;abc&quot;,&quot;abd&quot;,&quot;cbd&quot;]
+</code></pre>
+<p><em>分类后的结果为:</em></p>
+<pre><code class="language-py">words={&quot;a&quot;:[&quot;abc&quot;,&quot;abd&quot;],&quot;c&quot;:[&quot;cbd&quot;]}
+</code></pre>
+<p>为了确定每个 <code>word</code>匹配是否完成,我们使用二元组[str,int]来标记字符串的匹配进度,例如:</p>
+<pre><code class="language-py">words={&quot;a&quot;:[[&quot;abc&quot;,0],[&quot;abd&quot;,0]],&quot;c&quot;:[[&quot;cbd&quot;,0]]}
+</code></pre>
+<p><em>其中 <code>&quot;abc&quot;</code>的匹配进度为0,表示还未匹配任何字符.</em></p>
+<p>这样,每次尝试匹配 <code>s</code>中的一个字符 <code>s[i]</code>时,我们可以找到所有以 <code>s[i]</code>开头的字符串,并更新它们的匹配进度.</p>
+<p><strong>完整代码</strong></p>
+<pre><code class="language-py">class Solution:
+    def numMatchingSubseq(self, s: str, words: List[str]) -&gt; int:
+        # 解法三:多指针
+        ans = 0
+        cnt = defaultdict(list)
+        for idx, ch in enumerate(s):
+            cnt[ch].append(idx)
+
+        words_dict = defaultdict(list)
+        for word in words:
+            words_dict[word[0]].append([word, 0])  # 按照首字母把words分类到words_dict中
+            # [word,0]表示word已经匹配了0个字符
+
+        for ch in s:
+            # 对于s中的一个字符,我们同时匹配words_dict[ch]中的所有字符串
+            if words_dict[ch] == []:
+                continue  # 如果words_dict[ch]为空,则跳过
+
+            words_ch = words_dict[ch]
+            del words_dict[ch]
+            # words_ch表示正在匹配ch的字符串
+            # 将words_dict[ch]中的字符串取出,并清空words_dict[ch]
+
+            for word, idx in words_ch:
+                if idx == len(word)-1:
+                    ans += 1
+                # 如果word已经匹配完了,则ans+1
+
+                else:
+                    idx += 1
+                    words_dict[word[idx]].append([word, idx])
+                    # 如果word还没有匹配完,则按照word的下一个字符加入words_dict中
+                    # [word,idx]表示word已经匹配了idx个字符
+
+        return ans
+</code></pre>
+
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://scaramouche.me/leetcode/" class="tag">
+                    Leetcode Problems
+                  </a>
+                
+                  <a href="https://scaramouche.me/qFkJ3BDqw/" class="tag">
+                    遍历
+                  </a>
+                
+                  <a href="https://scaramouche.me/-Xd2FPf7J1/" class="tag">
+                    二分查找
+                  </a>
+                
+                  <a href="https://scaramouche.me/LcyrT0AeiW/" class="tag">
+                    多指针
+                  </a>
+                
+              </div>
+            
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+  <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
+  <script>
+    hljs.initHighlightingOnLoad()
+  </script>
+
+
+
+
+
+  </body>
+</html>

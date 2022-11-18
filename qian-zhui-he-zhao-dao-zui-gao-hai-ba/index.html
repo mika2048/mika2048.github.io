@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>【前缀和】找到最高海拔 | Scaramouche</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://scaramouche.me/favicon.ico?v=1668787649074">
+<link rel="stylesheet" href="https://scaramouche.me/styles/main.css">
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+    <meta name="description" content="
+写在前面：
+很多新手，例如我，特别喜欢简单题，经常花5min打卡了事。但是这样真的能够给自己带来能力上的提升吗？
+即使是简单题，我也希望大家能够沉下心来，分析数据结构和算法，打好中等题和困难题的基础。
+
+解题思路
+整数数组 gain 表示..." />
+    <meta name="keywords" content="前缀和" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://scaramouche.me">
+        <img src="https://scaramouche.me/images/avatar.png?v=1668787649074" class="site-logo">
+        <h1 class="site-title">Scaramouche</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="https://scaramouche.me" class="site-nav">
+            Home
+          </a>
+        
+      
+        
+          <a href="https://scaramouche.me/documents" class="site-nav">
+            Documents
+          </a>
+        
+      
+        
+          <a href="https://scaramouche.me/tags" class="site-nav">
+            Tags
+          </a>
+        
+      
+        
+          <a href="https://oi-wiki.org/" class="site-nav" target="_blank">
+            [OI Wiki]
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      <div align=center>Algorithms Solutions and Guide-Books</div>
+    </div>
+    <div class="site-footer">
+       | <a class="rss" href="https://scaramouche.me/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">【前缀和】找到最高海拔</h2>
+            <div class="post-date">11月19日 Saturday</div>
+            
+            <div class="post-content" v-pre>
+              <hr>
+<p><em>写在前面：</em></p>
+<p><em>很多新手，例如我，特别喜欢简单题，经常花5min打卡了事。但是这样真的能够给自己带来能力上的提升吗？</em></p>
+<p><em>即使是简单题，我也希望大家能够沉下心来，分析数据结构和算法，打好中等题和困难题的基础。</em></p>
+<hr>
+<h2 id="解题思路">解题思路</h2>
+<p>整数数组 <code>gain</code> 表示<strong>下一个点的高度减去这个点的高度</strong>。</p>
+<p>如果用 <code>altitudes</code>表示所有点的高度的话，并且约定初始点高度为0的话，那么可以得出以下公式：</p>
+<p class='katex-block'><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>a</mi><mi>t</mi><mi>t</mi><mi>i</mi><mi>t</mi><mi>u</mi><mi>d</mi><mi>e</mi><mi>s</mi><mo>[</mo><mi>x</mi><mo>]</mo><mo>=</mo><mrow><mo fence="true">{</mo><mtable><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mn>0</mn></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mtext>if</mtext></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><mi>x</mi><mo>=</mo><mn>0</mn></mrow></mstyle></mtd></mtr><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><msubsup><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>0</mn></mrow><mrow><mi>x</mi><mo>−</mo><mn>1</mn></mrow></msubsup><mi>g</mi><mi>a</mi><mi>i</mi><mi>n</mi><mo>[</mo><mi>i</mi><mo>]</mo></mrow></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mtext>if</mtext></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><mn>0</mn><mo>&lt;</mo><mi>x</mi><mo>&lt;</mo><mi>n</mi></mrow></mstyle></mtd></mtr></mtable></mrow></mrow><annotation encoding="application/x-tex">attitudes[x]=\begin{cases}0 &amp; \text{if} &amp; x=0 
+\\\sum_{i=0}^{x-1} gain[i] &amp; \text{if} &amp; 0&lt;x&lt;n
+\end{cases}
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault">a</span><span class="mord mathdefault">t</span><span class="mord mathdefault">t</span><span class="mord mathdefault">i</span><span class="mord mathdefault">t</span><span class="mord mathdefault">u</span><span class="mord mathdefault">d</span><span class="mord mathdefault">e</span><span class="mord mathdefault">s</span><span class="mopen">[</span><span class="mord mathdefault">x</span><span class="mclose">]</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:3.0000299999999998em;vertical-align:-1.25003em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;"><span class="delimsizing size4">{</span></span><span class="mord"><span class="mtable"><span class="col-align-l"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.69em;"><span style="top:-3.69em;"><span class="pstrut" style="height:3.008em;"></span><span class="mord"><span class="mord">0</span></span></span><span style="top:-2.25em;"><span class="pstrut" style="height:3.008em;"></span><span class="mord"><span class="mop"><span class="mop op-symbol small-op" style="position:relative;top:-0.0000050000000000050004em;">∑</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.954008em;"><span style="top:-2.40029em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">i</span><span class="mrel mtight">=</span><span class="mord mtight">0</span></span></span></span><span style="top:-3.2029em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">x</span><span class="mbin mtight">−</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.29971000000000003em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathdefault" style="margin-right:0.03588em;">g</span><span class="mord mathdefault">a</span><span class="mord mathdefault">i</span><span class="mord mathdefault">n</span><span class="mopen">[</span><span class="mord mathdefault">i</span><span class="mclose">]</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.19em;"><span></span></span></span></span></span><span class="arraycolsep" style="width:1em;"></span><span class="col-align-l"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.69em;"><span style="top:-3.69em;"><span class="pstrut" style="height:3.008em;"></span><span class="mord"><span class="mord text"><span class="mord">if</span></span></span></span><span style="top:-2.25em;"><span class="pstrut" style="height:3.008em;"></span><span class="mord"><span class="mord text"><span class="mord">if</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.19em;"><span></span></span></span></span></span><span class="arraycolsep" style="width:0.5em;"></span><span class="col-align-c"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.69em;"><span style="top:-3.69em;"><span class="pstrut" style="height:3.008em;"></span><span class="mord"><span class="mord mathdefault">x</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mord">0</span></span></span><span style="top:-2.25em;"><span class="pstrut" style="height:3.008em;"></span><span class="mord"><span class="mord">0</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mord mathdefault">x</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mord mathdefault">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.19em;"><span></span></span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span></p>
+<p>我们从左到右遍历数组，计算每个点的高度，然后取最大值即可。</p>
+<h3 id="解法一-前缀和">解法一: 前缀和</h3>
+<pre><code class="language-py">class Solution:
+    def largestAltitude(self, gain: List[int]) -&gt; int:
+        altitudes=[0]
+
+        for i in range(len(gain)):
+            altitudes.append(altitudes[-1]+gain[i])
+
+        return max(altitudes)
+</code></pre>
+<h2 id="不止解题">不止解题</h2>
+<p>本题属于前缀和类型的模板题：在题目中给出了前缀和的定义，只要按照定义实现即可。</p>
+<p>我们把这道题要求的数据抽象出来，如下：</p>
+<p class='katex-block'><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mo fence="true">[</mo><mtable><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><msubsup><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>0</mn></mrow><mn>0</mn></msubsup><mi>n</mi><mi>u</mi><mi>m</mi><mi>s</mi><mo>[</mo><mi>i</mi><mo>]</mo></mrow></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><msubsup><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>0</mn></mrow><mn>1</mn></msubsup><mi>n</mi><mi>u</mi><mi>m</mi><mi>s</mi><mo>[</mo><mi>i</mi><mo>]</mo></mrow></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi></mrow></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><msubsup><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>0</mn></mrow><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></msubsup><mi>n</mi><mi>u</mi><mi>m</mi><mi>s</mi><mo>[</mo><mi>i</mi><mo>]</mo></mrow></mstyle></mtd></mtr></mtable><mo fence="true">]</mo></mrow><annotation encoding="application/x-tex">\begin{bmatrix}
+\sum_{i=0}^{0}nums[i]    &amp; \sum_{i=0}^{1}nums[i]  &amp;...   &amp;\sum_{i=0}^{n-1}nums[i] 
+\end{bmatrix}
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.314008em;vertical-align:-0.407004em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;"><span class="delimsizing size1">[</span></span><span class="mord"><span class="mtable"><span class="col-align-c"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.9070040000000001em;"><span style="top:-2.9529959999999997em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mop"><span class="mop op-symbol small-op" style="position:relative;top:-0.0000050000000000050004em;">∑</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.954008em;"><span style="top:-2.40029em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">i</span><span class="mrel mtight">=</span><span class="mord mtight">0</span></span></span></span><span style="top:-3.2029em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">0</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.29971000000000003em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathdefault">n</span><span class="mord mathdefault">u</span><span class="mord mathdefault">m</span><span class="mord mathdefault">s</span><span class="mopen">[</span><span class="mord mathdefault">i</span><span class="mclose">]</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.407004em;"><span></span></span></span></span></span><span class="arraycolsep" style="width:0.5em;"></span><span class="arraycolsep" style="width:0.5em;"></span><span class="col-align-c"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.9070040000000001em;"><span style="top:-2.9529959999999997em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mop"><span class="mop op-symbol small-op" style="position:relative;top:-0.0000050000000000050004em;">∑</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.954008em;"><span style="top:-2.40029em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">i</span><span class="mrel mtight">=</span><span class="mord mtight">0</span></span></span></span><span style="top:-3.2029em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.29971000000000003em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathdefault">n</span><span class="mord mathdefault">u</span><span class="mord mathdefault">m</span><span class="mord mathdefault">s</span><span class="mopen">[</span><span class="mord mathdefault">i</span><span class="mclose">]</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.407004em;"><span></span></span></span></span></span><span class="arraycolsep" style="width:0.5em;"></span><span class="arraycolsep" style="width:0.5em;"></span><span class="col-align-c"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.9070040000000001em;"><span style="top:-2.9529959999999997em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">.</span><span class="mord">.</span><span class="mord">.</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.407004em;"><span></span></span></span></span></span><span class="arraycolsep" style="width:0.5em;"></span><span class="arraycolsep" style="width:0.5em;"></span><span class="col-align-c"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.9070040000000001em;"><span style="top:-2.9529959999999997em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mop"><span class="mop op-symbol small-op" style="position:relative;top:-0.0000050000000000050004em;">∑</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.954008em;"><span style="top:-2.40029em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">i</span><span class="mrel mtight">=</span><span class="mord mtight">0</span></span></span></span><span style="top:-3.2029em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">n</span><span class="mbin mtight">−</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.29971000000000003em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathdefault">n</span><span class="mord mathdefault">u</span><span class="mord mathdefault">m</span><span class="mord mathdefault">s</span><span class="mopen">[</span><span class="mord mathdefault">i</span><span class="mclose">]</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.407004em;"><span></span></span></span></span></span></span></span><span class="mclose delimcenter" style="top:0em;"><span class="delimsizing size1">]</span></span></span></span></span></span></span></p>
+<p>可以看到，我们<strong>多次想要计算</strong>数组 <code>nums</code>从 <code>0</code>到 <code>x</code>的和。这就叫做<strong>前缀和</strong>。</p>
+<p>到这里为止，你可以解决的题有：</p>
+<ol>
+<li><strong>[easy]</strong><a href="https://leetcode-cn.com/problems/range-sum-query-immutable/">区域和检索 - 数组不可变</a><br>
+<em>面向对象程序设计</em></li>
+<li><strong>[mid]</strong><a href="https://leetcode.cn/problems/subarray-sum-equals-k/">和为 K 的子数组</a><br>
+<em>前缀和与一种简单算法结合，能够快速查找某个符合条件的区间是否存在</em></li>
+<li><strong>[mid]</strong><a href="https://leetcode.cn/problems/count-number-of-nice-subarrays/">统计「优美子数组」</a><br>
+<em>前缀<s>和</s>数字(?)奇怪的名字，但是一样的思路</em></li>
+</ol>
+<p>如果你对单调栈非常熟悉，也可以尝试下面这几道题。其中第一和第二道为单调栈题目，第三道为基于前两道题目基础的前缀和算法题目。</p>
+<ol>
+<li><strong>[mid]</strong><a href="https://leetcode.cn/problems/sum-of-subarray-minimums/">子数组的最小值之和</a><br>
+-&gt;<strong>[mid]</strong><a href="https://leetcode.cn/problems/maximum-subarray-min-product/">子数组最小乘积的最大值</a><br>
+-&gt;<strong>[hard]</strong><a href="https://leetcode.cn/problems/sum-of-total-strength-of-wizards/">巫师的总力量和</a><br>
+<em>第三道题目难度分2621，量力而行</em></li>
+</ol>
+<p>如果你想更进一步，可以尝试学习下面的算法，这些算法都是用来解决区间问题。<em>原文见链接</em></p>
+<blockquote>
+<p><a href="https://leetcode.cn/problems/count-of-range-sum/solution/xian-ren-zhi-lu-ru-he-xue-xi-ke-yi-jie-jue-ben-ti-/">如何学习可以解决本题的算法与数据结构</a> @zerotrac</p>
+</blockquote>
+<h5 id="频数数组">频数数组</h5>
+<blockquote>
+<p>令<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>f</mi><mi>r</mi><mi>e</mi><mi>q</mi><mo>[</mo><mi>x</mi><mo>]</mo></mrow><annotation encoding="application/x-tex">freq[x]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.10764em;">f</span><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="mord mathdefault">e</span><span class="mord mathdefault" style="margin-right:0.03588em;">q</span><span class="mopen">[</span><span class="mord mathdefault">x</span><span class="mclose">]</span></span></span></span>表示元素<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>x</mi></mrow><annotation encoding="application/x-tex">x</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault">x</span></span></span></span>在数据结构中的出现次数。</p>
+<p>操作1「查询」：给定一个范围 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mo>[</mo><mi>l</mi><mi>e</mi><mi>f</mi><mi>t</mi><mo separator="true">,</mo><mi>r</mi><mi>i</mi><mi>g</mi><mi>h</mi><mi>t</mi><mo>]</mo></mrow><annotation encoding="application/x-tex">[left,right]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="mord mathdefault">e</span><span class="mord mathdefault" style="margin-right:0.10764em;">f</span><span class="mord mathdefault">t</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="mord mathdefault">i</span><span class="mord mathdefault" style="margin-right:0.03588em;">g</span><span class="mord mathdefault">h</span><span class="mord mathdefault">t</span><span class="mclose">]</span></span></span></span>，查询 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>t</mi><mo>[</mo><mi>l</mi><mi>e</mi><mi>f</mi><mi>t</mi><mo>]</mo></mrow><annotation encoding="application/x-tex">t[left]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault">t</span><span class="mopen">[</span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="mord mathdefault">e</span><span class="mord mathdefault" style="margin-right:0.10764em;">f</span><span class="mord mathdefault">t</span><span class="mclose">]</span></span></span></span> 到 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>t</mi><mo>[</mo><mi>r</mi><mi>i</mi><mi>g</mi><mi>h</mi><mi>t</mi><mo>]</mo></mrow><annotation encoding="application/x-tex">t[right]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault">t</span><span class="mopen">[</span><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="mord mathdefault">i</span><span class="mord mathdefault" style="margin-right:0.03588em;">g</span><span class="mord mathdefault">h</span><span class="mord mathdefault">t</span><span class="mclose">]</span></span></span></span> 的和；</p>
+<p>操作2「更新」：给定一个元素 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>x</mi></mrow><annotation encoding="application/x-tex">x</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault">x</span></span></span></span> ，将 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>t</mi><mo>[</mo><mi>x</mi><mo>]</mo></mrow><annotation encoding="application/x-tex">t[x]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault">t</span><span class="mopen">[</span><span class="mord mathdefault">x</span><span class="mclose">]</span></span></span></span> 增加 1。</p>
+</blockquote>
+<h5 id="离散化">离散化</h5>
+<blockquote>
+<p>给定数组元素 <code>[1, 22, 333, 4444, 55555]</code>，如果我们只关注它们之间的大小关系，那么该数组其实和 <code>[1, 2, 3, 4, 5]</code>是等价的。</p>
+</blockquote>
+<h5 id="线段树">线段树</h5>
+<h5 id="树状数组">树状数组</h5>
+<h5 id="平衡二叉搜索树">平衡二叉搜索树</h5>
+
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://scaramouche.me/qian-zhui-he/" class="tag">
+                    前缀和
+                  </a>
+                
+              </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://scaramouche.me/bian-li-you-hua-zi-xu-lie-kuan-du-zhi-he/">
+                  <h3 class="post-title">
+                    【遍历】【优化】子序列宽度之和
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+  <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
+  <script>
+    hljs.initHighlightingOnLoad()
+  </script>
+
+
+
+
+
+  </body>
+</html>
